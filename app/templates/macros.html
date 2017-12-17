@@ -1,0 +1,96 @@
+{% macro pagination_widget(pagination,endpoint) %}
+<ul class="pagination pagination-sm justify-content-center normal-font">
+    {% if not pagination.has_prev %}
+        <li class="page-item disable"><a class="page-link" href="#">上一页</a></li>
+    {% else %}
+        <li class="page-item disable"><a class="page-link" href="{{ url_for(endpoint,page=pagination.page-1) }}">上一页</a></li>
+    {% endif %}
+    {% for p in pagination.iter_pages() %}
+        {% if p %}
+            {% if p==pagination.page %}
+                <li class="page-item active"><a class="page-link" href="{{ url_for(endpoint,page=p) }}">{{ p }}</a></li>
+            {% else %}
+                <li class="page-item"><a class="page-link" href="{{ url_for(endpoint,page=p) }}">{{ p }}</a></li>
+            {% endif %}
+        {% else %}
+            <li class="page-item disable"><a class="page-link" href="#">{{ p }}</a></li>
+        {% endif %}
+    {% endfor %}
+
+    {% if not pagination.has_next %}
+        <li class="page-item disable"><a class="page-link" href="#">下一页</a></li>
+    {% else %}
+        <li class="page-item disable"><a class="page-link" href="{{ url_for(endpoint,page=pagination.page +1)}}">下一页</a></li>
+    {% endif %}
+</ul>
+{% endmacro %}
+
+{% macro secondery_select(categories) %}
+    <select id="select_one" name="select_one" selected onChange="move()">
+    <option  value="0">--请选择！--</option>
+    {% for fa_key in categories %}
+        <option  value="{{ fa_key.id }}">{{ fa_key.show_name }}</option>
+    {% endfor %}
+    </select>
+
+    <select id="select_two" name="select_two" style="display:none;">
+    </select>
+<script>
+     function move()
+     {
+         var select_one=document.getElementById("select_one");
+         var select_two=document.getElementById("select_two");
+         <!-- 获取一级和二级的属性-->
+
+         {% for fa in categories %}
+            if(select_one.value=='{{fa.id}}' ){
+             {% if categories[fa] !=[]  %}
+                 select_two.setAttribute('style','')
+                 select_two.length=0;
+                 {% for child in categories[fa] %}
+                     $ch=$('<option value="{{ child.id }}">{{ child.show_name }}</option>');
+                     $('#select_two').append($ch);
+                 {% endfor %}
+
+             {% else %}
+                 select_two.length=0;
+                select_two.setAttribute('style','display:none;');
+             {% endif %}
+            }
+         {% endfor %}
+     }
+</script>
+{% endmacro %}
+
+{% macro breadcrumb(breadcrumbData) %}
+    <div id="breadcrumb" class="container normal-font">
+	  	<ul class="breadcrumb">
+            {% for item in breadcrumbData %}
+			<li class="breadcrumb-item" ><a href="{{ url_for('main.list',name=item.url_name) }}">{{ item.show_name }}</a></li>
+            {% endfor %}
+		</ul>
+	</div>
+{% endmacro %}
+
+{% macro navbar(categories) %}
+<div id="navbar" class="container normal-font">
+    <nav class="navbar navbar-expand-sm bg-light navbar-light">
+        <ul class="navbar-nav">
+
+                {% for fa_key in categories %}
+                    <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('main.list',name=fa_key.url_name) }}" >{{ fa_key.show_name }}</a>
+                    {% if categories[fa_key] !=[]  %}
+                        <ul class="sub-menu">
+                        {% for child in categories[fa_key] %}
+                            <li><a href="{{ url_for('main.list',name=child.url_name) }}" >{{ child.show_name }}</a></li>
+                        {% endfor %}
+                        </ul>
+                    {% endif %}
+                    </li>
+                {% endfor %}
+
+        </ul>
+    </nav>
+</div>
+{% endmacro %}

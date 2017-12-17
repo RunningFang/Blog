@@ -1,0 +1,169 @@
+{%- extends "admin/base.html" -%}
+{% import "bootstrap/wtf.html" as wtf %}
+{%- block content -%}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+      <div class="row">
+        <form  method="post" autocomplete="off" draggable="false" enctype="multipart/form-data">
+          {{ form.hidden_tag() }}
+            <div class="col-md-9">
+            <h1 class="page-header">个人简介</h1>
+            <div class="add-article-box">
+              <div class="add-article-box-content">
+                {{ wtf.form_field(form.name) }}
+              </div>
+            </div>
+            <div class="add-article-box">
+              <div class="add-article-box-content">
+              {{ wtf.form_field(form.image) }}
+              </div>
+            </div>
+            <div class="add-article-box">
+              <div class="add-article-box-content">
+                  {{ wtf.form_field(form.introduction) }}
+              </div>
+            </div>
+            <div class="add-article-box">
+              <h2 class="add-article-box-title">
+                  <span>
+                      技能树
+                      <button type="button" >
+                          <input type="hidden" id="techNum" name="techNum" value="0">
+                          <span class="glyphicon glyphicon-plus" onclick="addTech()" aria-hidden="true"></span>
+                      </button>
+                  </span>
+              </h2>
+              <div class="add-article-box-content" id="tech" >
+
+              </div>
+            </div>
+
+            <div class="add-article-box">
+              <h2 class="add-article-box-title">
+                  <span>
+                      联系方式
+                      <button type="button" >
+                          <input type="hidden" id="telNum" name="telNum" value="0">
+                          <span class="glyphicon glyphicon-plus" onclick="addTel()" aria-hidden="true"></span>
+                      </button>
+                  </span>
+              </h2>
+              <div class="add-article-box-content" id="tel" >
+
+              </div>
+            </div>
+
+            <div class="add-article-box">
+                {{ wtf.form_field(form.submit) }}
+            </div>
+            </div>
+        </form>
+      </div>
+    </div>
+{%- endblock content -%}
+
+{%- block scripts -%}
+    {{ super() }}
+    <link rel="stylesheet"href={{ url_for('static',filename='css/admin-style.css')}}>
+    <script type='text/javascript' src={{ url_for('static',filename='js/jquery.min.js')}}></script>
+    <script>
+        var TECH_NUM=0;
+        var TEL_NUM=0;
+        (function () {
+            TECH_NUM=parseInt({{ techNumValue}})
+            TEL_NUM=parseInt({{ telNumValue}})
+            i=1;
+            {% for telV in telValue %}
+                $tel=$('{{ telV }}')
+                $telP=$('<tr id="tel'+i.toString()+'"></tr>');
+                $telP.append($tel)
+                $('#tel').append($telP);
+                i++;
+            {% endfor %}
+            i=1;
+            {% for techV in techValue %}
+                $tech=$('{{ techV }}')
+                $techP=$('<tr id="tech'+i.toString()+'"></tr>');
+                $techP.append($tech)
+                $('#tech').append($techP);
+                i++;
+            {% endfor %}
+
+        })();
+
+        function checkField(id){
+            label= document.getElementById(id.replace('techProportion','techProportionValue'));
+            label.innerText=document.getElementById(id).value;
+        }
+
+        function setTEL_NUM() {
+            tel_num=document.getElementById('telNum')
+            tel_num.value=TEL_NUM
+        }
+
+        function setTECH_NUM() {
+            tech_num=document.getElementById('techNum')
+            tech_num.value=TECH_NUM
+        }
+
+
+        function addTech(){
+            alert(TECH_NUM)
+            TECH_NUM++;
+            alert(TECH_NUM)
+            $techNameLabel=$('<li class="li-side"><label>技能名：</label></li>&nbsp;&nbsp;');
+            $techName=$('<li class="li-side"><input type="text" id="techName'+TECH_NUM.toString()+'" name="techName'+TECH_NUM.toString()+'"></li>&nbsp;&nbsp;');
+            $techProportionLabel=$('<li class="li-side"><label>技能值：</label></li>&nbsp;&nbsp;');
+
+            $techProportion=$('<li class="li-side"><input type="range" style="width: 100px;" value="0" onchange="checkField(this.id)" id="techProportion'+TECH_NUM.toString()+'" name="techProportion'+TECH_NUM.toString()+'"></li>&nbsp;&nbsp;');
+            $techProportionValueLabel=$('<li class="li-side"><label id="techProportionValue'+TECH_NUM.toString()+'">0</label></li>');
+            $techDel=$('<li class="li-side"><input id = "' + TECH_NUM.toString() + '" type="button" onclick="delTech(this.id);" value="-" /></li>')
+            $techP=$('<tr id="tech'+TECH_NUM.toString()+'"></tr>');
+
+            $techP.append($techNameLabel);
+            $techP.append($techName);
+            $techP.append($techProportionLabel);
+            $techP.append($techProportion);
+            $techP.append($techProportionValueLabel);
+            $techP.append($techDel);
+            $('#tech').append($techP);
+            setTECH_NUM();
+
+        }
+
+        function addTel(){
+            TEL_NUM++;
+            $telNameLabel=$('<li class="li-side"><label>联系方式类型：</label></li>&nbsp;&nbsp;');
+            $telName=$('<li class="li-side"><input type="text" name="telName'+TEL_NUM.toString()+'"></li>&nbsp;&nbsp;');
+            $telVauleLabel=$('<li class="li-side"><label>联系方式值：</label></li>&nbsp;&nbsp;');
+
+            $telValue=$('<li class="li-side"><input type="text" style="width: 100px;" name="telValue'+TEL_NUM.toString()+'"></li>&nbsp;&nbsp;');
+            $telDel=$('<li class="li-side"><input id = "' + TEL_NUM.toString() + '" type="button" onclick="delTel(this.id);" value="-" /></li>')
+            $telP=$('<tr id="tel'+TEL_NUM.toString()+'"></tr>');
+
+            $telP.append($telNameLabel);
+            $telP.append($telName);
+            $telP.append($telVauleLabel);
+            $telP.append($telValue);
+            $telP.append($telDel);
+            $('#tel').append($telP);
+            setTEL_NUM();
+
+        }
+        function delTel(num) {
+            if (TEL_NUM >=0){
+                node = document.getElementById("tel"+num.toString());
+                node.parentNode.removeChild(node);
+                TEL_NUM--;
+            }
+        }
+
+	    function delTech(num) {
+           if (TECH_NUM >=0){
+                node = document.getElementById("tech"+num.toString());
+                node.parentNode.removeChild(node);
+                TECH_NUM--;
+            }
+	    }
+
+    </script>
+{%- endblock scripts -%}

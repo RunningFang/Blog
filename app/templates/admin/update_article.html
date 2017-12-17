@@ -1,0 +1,73 @@
+{% extends "admin/base.html" %}
+{% import "macros.html" as macros %}
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+      <div class="row">
+        <form action="{{ url_for('admin.update_article',id=article.id) }}" method="post" class="add-article-form">
+          <div class="col-md-9">
+            <h1 class="page-header">撰写新文章</h1>
+            <div class="form-group">
+              <h2 class="add-article-box-title"><span>标题</span></h2>
+              <input type="text" id="article-title" name="title" value="{{ article.title }}" class="form-control" placeholder="在此处输入标题" required autofocus autocomplete="off">
+            </div>
+
+              <div class="add-article-box">
+              <h2 class="add-article-box-title"><span>内容</span></h2>
+              <div class="add-article-box-content" id="preview-editormd">
+              	<textarea style="display:none;" id="body" name="body">{{ article.body }}</textarea>
+              </div>
+            </div>
+            <div class="add-article-box">
+              <div class="add-article-box-content">
+              	<h2 class="add-article-box-title"><span>关键字</span></h2>
+                <input type="text" id="article-keywords" name="keywords" value="{{ article.keywords }}" class="form-control" placeholder="在此处输入关键字" required autofocus autocomplete="off">
+                <span class="prompt-text">多个标签请用英文逗号,隔开。</span>
+              </div>
+            </div>
+            <div class="add-article-box">
+              <div class="add-article-box-content">
+              	 <h2 class="add-article-box-title"><span>描述</span></h2>
+                <input type="text" id="article-description" name="description" value="{{ article.description }}" class="form-control" placeholder="在此处输入描述" required autofocus autocomplete="off">
+                <span class="prompt-text">描述是可选的手工创建的内容总结，并可以在网页描述中使用</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-3">
+            <h1 class="page-header">操作</h1>
+            <div class="add-article-box">
+              <h2 class="add-article-box-title"><span>栏目</span></h2>
+              <div class="add-article-box-content">
+                <ul class="category-list">
+                    {{ macros.secondery_select(categories) }}
+                </ul>
+              </div>
+            </div>
+            <div class="add-article-box">
+              <h2 class="add-article-box-title"><span>发布</span></h2>
+              <div class="add-article-box-footer">
+                 <button class="btn btn-primary" type="submit" name="submit">发布</button>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+{% endblock content %}
+{% block scripts %}
+    {{ super() }}
+    <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.min.css')}}" />
+    <script src="{{ url_for('static',filename='editormd/editormd.min.js')}}"></script>
+    <script type="text/javascript">
+        var testEditor;
+
+        $(function() {
+            testEditor = editormd("preview-editormd", {
+                width   : "90%",
+                height  : 640,
+                syncScrolling : "single",
+                path    : "{{ url_for('static',filename='editormd/lib/') }}"
+            });
+
+        });
+    </script>
+{% endblock scripts %}

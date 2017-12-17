@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="renderer" content="webkit">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>博客后台</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='admin/css/bootstrap.min.css') }}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='admin/css/admin-style.css')}}">
+<link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='admin/css/font-awesome.min.css')}}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='admin/css/login.css')}}">
+<script src="{{ url_for('static',filename='admin/js/jquery.min.js')}}"></script>
+
+</head>
+    {% block content %}
+        <body class="user-select">
+    <div class="container">
+    <form action="{{ url_for('admin.login') }}" method="post" autocomplete="off" class="form-signin">
+        <h2 class="form-signin-heading">管理员登录</h2>
+        <label for="userName" class="sr-only">用户名</label>
+        <input type="text" id="email" name="email" class="form-control" placeholder="请输入用户名" required autofocus autocomplete="off" maxlength="10">
+        <label for="userPwd" class="sr-only">密码</label>
+        <input type="password" id="password" name="password" class="form-control" placeholder="请输入密码" required autocomplete="off" maxlength="18">
+        <button class="btn btn-lg btn-primary btn-block" type="submit" id="signinSubmit">登录</button>
+    </form>
+    </div>
+
+
+
+    <script src="{{ url_for('static',filename='js/jquery.min.js')}}"></script>
+<script type="text/javascript">
+    $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    $(function() {
+    $('#signinSubmit').bind('click', function() {
+    $.post($SCRIPT_ROOT + '/admin/login', {
+    email: $('input[name="email"]').val(),
+    password: $('input[name="password"]').val()
+    },function(data) {
+        if(data.result=='0'){
+            alert('登录失败');
+        }
+        window.location.href=data.url;
+    });
+    return false;
+    });
+    });
+</script>
+<script>
+
+$('#signinSubmit').click(function(){
+	if($('#userName').val() === ''){
+		$(this).text('用户名不能为空');
+	}else if($('#userPwd').val() === ''){
+		$(this).text('密码不能为空');
+	}else{
+		$(this).text('请稍后...');
+	}
+});
+</script>
+</body>
+    {% endblock content %}
+</html>

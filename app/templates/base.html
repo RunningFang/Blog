@@ -1,0 +1,86 @@
+{% extends "bootstrap/base.html" %}
+{% import "macros.html" as macros %}
+{% block head %}
+
+    <title>
+    {% block title %}
+        {% if setting.title %}
+            {{ setting.title }}
+        {% endif %}
+    {% endblock title %}
+    </title>
+
+    {% block metas %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% if setting.keywords %}
+            <meta name="keywords" content="{{ setting.keywords }}">
+        {% endif %}
+        {% if setting.description %}
+            <meta name="description" content="{{ setting.description }}">
+        {% endif %}
+    {% endblock metas %}
+
+    {% block styles %}
+        <script src="{{ url_for('static', filename='js/jquery.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/popper.min.js')}}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.min.js')}}"></script>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/fontawesome-all.css')}}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='upload/photos/favicon.ico') }}">
+    {% endblock styles %}
+
+{% endblock head %}
+
+
+{% block body %}
+    <!--导航栏-->
+    {% block navbar %}
+        <div id="logo" class="container logo-font text-center">
+    	    {% if setting.title %}
+                {{ setting.title }}
+            {% endif %}
+ 	    </div>
+
+         {{ macros.navbar(navbar) }}
+
+    {% endblock navbar %}
+
+    <!--主体内容-->
+    {% block content %}
+    {% block footer %}
+        <div class="container">
+            <footer class="container normal-font text-center" >
+                <div class="footer-inner">
+                    <div>
+                        <a href={{ url_for('main.index') }} >
+                            {{ setting.title }}
+                        </a>
+                        版权所有丨基于
+                        <a href="http://flask.pocoo.org/">
+                            Flask
+                        </a>
+                        {% if setting.deposit %}
+                        丨托管于
+                        <a rel="nofollow" target="_blank" href="">
+                        </a>
+                        {{ setting.deposit }}
+                        {% endif %}
+                        {% if setting.icp_number %}
+                        丨{{ setting.icp_number }}
+                        {% endif %}
+                        <div>
+                            {% if setting.protocol %}
+                                {{ setting.protocol }}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    {% endblock footer %}
+    {% endblock content %}
+    <!--底部块-->
+
+{% endblock body %}

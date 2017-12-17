@@ -1,0 +1,39 @@
+{% extends "admin/login.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block title %}
+    安装
+{% endblock title %}
+{% block  content %}
+    {% if flag == 1 %}
+        <script>
+        (function(){alert('请重启系统和应用以便安装程序加载配置');}());
+        </script>
+    {% endif %}
+    <body class="user-select">
+    <div class="container">
+      <form method="post" autocomplete="off" class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main"
+      style="margin-left: 120px;margin-right: 120px;">
+          {{ form.hidden_tag() }}
+          <h1 class="page-header">用户信息</h1>
+              {{ wtf.form_field(form.user_name) }}
+              {{ wtf.form_field(form.email) }}
+              {{ wtf.form_field(form.password) }}
+              {{ wtf.form_field(form.confirm_password) }}
+          <h1 class="page-header">数据库信息</h1>
+              {{ wtf.form_field(form.mysql_username) }}
+              {{ wtf.form_field(form.mysql_password) }}
+          <h1 class="page-header">安全信息</h1>
+              {{ wtf.form_field(form.secret_key) }}
+          <h1 class="page-header">邮件配置</h1>
+              {{ wtf.form_field(form.mail_server) }}
+              {{ wtf.form_field(form.mail_port) }}
+              {{ wtf.form_field(form.mail_use_protocol) }}
+              {{ wtf.form_field(form.mail_username) }}
+              {{ wtf.form_field(form.mail_password) }}
+          {{ form.submit(class="btn btn-lg btn-primary btn-block",
+          onclick="javaScript:alert('页面自动刷新后请重启操作系统\n并重启应用')") }}
+      </form>
+
+    </div>
+    </body>
+{% endblock content %}

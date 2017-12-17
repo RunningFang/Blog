@@ -1,0 +1,22 @@
+{%- extends "bootstrap/base.html" -%}
+{%- block head -%}
+    <title>
+        {%- block title -%}博客后台{% endblock title -%}
+    </title>
+
+    {%- block metas -%}
+        {{ super() }}
+    <meta charset="utf-8">
+    {%- endblock metas -%}
+
+
+    {%- block styles -%}
+        <script type="text/javascript" src="{{ url_for('static',filename='js/jquery.min.js') }}"></script>
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/admin-admin-style.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/login.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/bootstrap.min.css') }}">
+        <link rel="stylesheet" type="text/css" href="{{ url_for('static',filename='css/fontawesome-all.css') }}"/>
+    {%- endblock styles -%}
+
+{%- endblock head -%}
+<head>

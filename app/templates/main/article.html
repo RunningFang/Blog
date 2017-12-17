@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block metas %}
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% if article.keys %}
+            <meta name="keywords" content="{{ article.keys }}">
+        {% endif %}
+        {% if SelfBlogConfig.description %}
+            <meta name="description" content="{{ article.description }}">
+        {% endif %}
+    {% endblock metas %}
+{% block content %}
+    {{macros.breadcrumb(breadcrumb)}}
+<div id="article" class="container">
+    <div id="article-title" class="article-title-font">
+        {{ article.title }}
+    </div>
+    <div id="article-content" class="article-content-font text-left">
+        <div id="editorMdview">
+        <textarea id="markdownToHTML" style="display:none;">
+{{ article.body|safe }}
+        </textarea>
+        </div>
+    </div>
+</div>
+
+    <script type="text/javascript">
+
+		(function(){
+			mdToHml();
+			highlight();
+		})();
+        function mdToHml(){
+
+            editormd.markdownToHTML("editorMdview", {
+                htmlDecode: "style,script,iframe", //可以过滤标签解码
+                emoji: true,
+                taskList:true,
+                tex: true,               // 默认不解析
+                flowChart:true,         // 默认不解析
+                sequenceDiagram:true,  // 默认不解析
+            });
+        }
+			function highlight(){
+		l = document.createElement('link');
+		l.setAttribute('href',"{{ url_for('static',filename='highlight/styles/monokai.css')}}");
+		l.setAttribute('rel','stylesheet');
+		document.head.appendChild(l);
+	}
+    </script>
+    {{ super() }}
+{% endblock content %}
+{% block styles %}
+        <link rel="stylesheet" href="{{ url_for('static',filename='css/admin-style.css') }}" />
+        <link rel="stylesheet" href="{{ url_for('static',filename='editormd/css/editormd.preview.css') }}" />
+        <script src="{{ url_for('static',filename='editormd/examples/js/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='editormd/lib/marked.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='editormd/lib/prettify.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='editormd/lib/raphael.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='editormd/lib/underscore.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='editormd/lib/sequence-diagram.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='editormd/lib/flowchart.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='editormd/lib/jquery.flowchart.min.js') }}"></script>
+        <script src="{{ url_for('static',filename='editormd/editormd.js') }}"></script>
+		<link rel="stylesheet" href="{{ url_for('static',filename='highlight/styles/default.css') }}">
+		<script src="{{ url_for('static',filename='highlight/highlight.pack.js') }}"></script>
+		<script>hljs.initHighlightingOnLoad();</script>
+        {{ super() }}
+{% endblock styles %}

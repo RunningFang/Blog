@@ -1,0 +1,47 @@
+{% extends "admin/base.html" %}
+{% block content %}
+    <div class="col-sm-9 col-sm-offset-3 col-md-10 col-lg-10 col-md-offset-2 main" id="main">
+      <div class="row">
+        <form method="post" autocomplete="off" >
+          <div class="col-md-9">
+            <h1 class="page-header">个人信息修改</h1>
+            <div class="add-article-box">
+              <div class="add-article-box-content">
+              	<h2 class="add-article-box-title"><span>姓名</span></h2>
+                <input type="text" id="article-keywords" name="user_name" value="{{ user.user_name }}" class="form-control" placeholder="在此处输入关键字" required autofocus autocomplete="off">
+              </div>
+            </div>
+              <div class="add-article-box">
+              <div class="add-article-box-content">
+              	<h2 class="add-article-box-title"><span>姓名</span></h2>
+                <input type="text" id="article-keywords" name="email" value="{{ user.email }}" class="form-control" placeholder="在此处输入关键字" required autofocus autocomplete="off">
+              </div>
+            </div>
+            <div class="add-article-box">
+              <div class="add-article-box-content">
+              	<h2 class="add-article-box-title"><span>旧密码</span></h2>
+                <input type="password" id="article-keywords" name="old_password" class="form-control" placeholder="在此处输入关键字" required autofocus autocomplete="off">
+              </div>
+            </div>
+            <div class="add-article-box">
+              <div class="add-article-box-content">
+              	<h2 class="add-article-box-title"><span>新密码</span></h2>
+                <input type="password" id="article-keywords" name="password" class="form-control" placeholder="在此处输入关键字" required autofocus autocomplete="off">
+              </div>
+            </div>
+              <div class="add-article-box">
+              <div class="add-article-box-content">
+              	<h2 class="add-article-box-title"><span>验证新密码</span></h2>
+                <input type="password" id="article-keywords" name="confirm_password" class="form-control" placeholder="在此处输入关键字" required autofocus autocomplete="off">
+              </div>
+            </div>
+            <div class="add-article-box">
+                <div align="center">
+                    <button class="btn btn-primary" type="submit" name="submit">发布</button>
+                </div>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+{% endblock content %}
