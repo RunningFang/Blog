@@ -19,9 +19,9 @@
     <form action="{{ url_for('admin.login') }}" method="post" autocomplete="off" class="form-signin">
         <h2 class="form-signin-heading">管理员登录</h2>
         <label for="userName" class="sr-only">用户名</label>
-        <input type="text" id="email" name="email" class="form-control" placeholder="请输入用户名" required autofocus autocomplete="off" maxlength="10">
+        <input type="text" id="email" name="email" class="form-control" placeholder="请输入用户名" required autofocus autocomplete="off">
         <label for="userPwd" class="sr-only">密码</label>
-        <input type="password" id="password" name="password" class="form-control" placeholder="请输入密码" required autocomplete="off" maxlength="18">
+        <input type="password" id="password" name="password" class="form-control" placeholder="请输入密码" required autocomplete="off">
         <button class="btn btn-lg btn-primary btn-block" type="submit" id="signinSubmit">登录</button>
     </form>
     </div>
